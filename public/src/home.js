@@ -24,19 +24,12 @@ function getMostCommonGenres(books) {
     return frequency;
   }, []);
 
-  genreFrequency.sort((genreA, genreB) =>
-    genreA.count > genreB.count ? -1 : 1
-  );
-
-  while (genreFrequency.length > 5) {
-    genreFrequency.pop();
-  }
-
+  sortMostPopular(genreFrequency);
+  limitReturnSize(genreFrequency, 5);
   return genreFrequency;
 }
 
 function getMostPopularBooks(books) {
-  //TODO EXPECTING MOST POPULAR BOOK TO BE 11 COUNT. GETTING 10 INSTEAD FOR SOME REASON.
   const bookPopularity = books.map((book) => {
     let currentBook = book;
     const name = book.title;
@@ -47,12 +40,8 @@ function getMostPopularBooks(books) {
     };
   });
 
-  bookPopularity.sort((bookA, bookB) => (bookA.count > bookB.count ? -1 : 1));
-
-  while (bookPopularity.length > 5) {
-    bookPopularity.pop();
-  }
-
+  sortMostPopular(bookPopularity);
+  limitReturnSize(bookPopularity, 5);
   return bookPopularity;
 }
 
@@ -86,15 +75,20 @@ function getMostPopularAuthors(books, authors) {
     };
   });
 
-  authorsPopularity.sort((authorA, authorB) =>
-    authorA.count > authorB.count ? -1 : 1
-  );
-
-  while (authorsPopularity.length > 5) {
-    authorsPopularity.pop();
-  }
-
+  sortMostPopular(authorsPopularity);
+  limitReturnSize(authorsPopularity, 5);
   return authorsPopularity;
+}
+
+//HELPER FUNCTIONS BELOW
+function limitReturnSize(array, limit) {
+  while (array.length > limit) {
+    array.pop();
+  }
+}
+
+function sortMostPopular(array) {
+  array.sort((itemA, itemB) => (itemA.count > itemB.count ? -1 : 1));
 }
 
 module.exports = {
